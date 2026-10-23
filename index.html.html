@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Controle de Atrasos Escolares — ES</title>
+<style>
+  :root {
+    --azul: #0057a3;
+    --azul-escuro: #003d73;
+    --azul-claro: #e8f1fb;
+    --rosa: #d81e5b;
+    --rosa-escuro: #a8164a;
+    --branco: #ffffff;
+    --cinza: #f5f7fa;
+    --texto: #1f2937;
+    --texto-suave: #6b7280;
+    --borda: #dbe3ec;
+    --sombra: 0 4px 18px rgba(0, 61, 115, 0.08);
+    --sombra-hover: 0 6px 24px rgba(0, 61, 115, 0.14);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
+    background: var(--cinza);
+    margin: 0;
+    color: var(--texto);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  header {
+    background: linear-gradient(135deg, var(--azul) 0%, var(--azul-escuro) 100%);
+    color: var(--branco);
+    padding: 28px 20px 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--azul) 0%, var(--branco) 50%, var(--rosa) 100%);
+  }
+
+  header h1 {
+    margin: 0 0 6px;
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  header p {
+    margin: 0;
+    opacity: 0.85;
+    font-size: 0.92rem;
+    font-weight: 400;
+  }
+
+  main {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 20px 15px 40px;
+  }
+
+  .card {
+    background: var(--branco);
+    padding: 24px;
+    margin-bottom: 18px;
+    border-radius: 14px;
+    box-shadow: var(--sombra);
+    border: 1px solid var(--borda);
+    animation: fadeIn 0.25s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  h2 {
+    color: var(--azul-escuro);
+    font-size: 1.2rem;
+    margin: 0 0 4px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--azul-claro);
+  }
+
+  h3 {
+    color: var(--azul-escuro);
+    font-size: 1rem;
+    margin: 24px 0 8px;
+    font-weight: 600;
+  }
+
+  label {
+    display: block;
+    margin-top: 16px;
+    font-weight: 600;
+    font-size: 0.88rem;
+    color: var(--texto);
+    letter-spacing: 0.01em;
+  }
+
+  input, select, textarea, button {
+    width: 100%;
+    padding: 12px 14px;
+    margin-top: 6px;
+    border-radius: 9px;
+    font-size: 15px;
+    font-family: inherit;
+    transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+  }
+
+  input, select, textarea {
+    border: 1.5px solid var(--borda);
+    background: var(--branco);
+    color: var(--texto);
+  }
+
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--azul);
+    box-shadow: 0 0 0 3px rgba(0, 87, 163, 0.15);
+  }
+
+  textarea { resize: vertical; min-height: 70px; }
+
+  button {
+    border: none;
+    background: var(--azul);
+    color: var(--branco);
+    font-weight: 600;
+    margin-top: 16px;
+    cursor: pointer;
+    letter-spacing: 0.01em;
+    box-shadow: 0 2px 6px rgba(0, 87, 163, 0.25);
+  }
+
+  button:hover {
+    background: var(--azul-escuro);
+    box-shadow: 0 4px 12px rgba(0, 87, 163, 0.3);
+  }
+
+  button:active { transform: translateY(1px); }
+
+  .whatsapp {
+    background: #1e9e5a;
+    box-shadow: 0 2px 6px rgba(30, 158, 90, 0.25);
+  }
+  .whatsapp:hover { background: #17834a; }
+
+  .excluir {
+    background: var(--rosa);
+    box-shadow: 0 2px 6px rgba(216, 30, 91, 0.25);
+  }
+  .excluir:hover { background: var(--rosa-escuro); }
+
+  .registro {
+    border-bottom: 1px solid var(--borda);
+    padding: 16px 0;
+    font-size: 0.92rem;
+    line-height: 1.7;
+  }
+
+  .registro:last-child { border-bottom: none; }
+
+  .registro strong {
+    color: var(--azul-escuro);
+    font-size: 1rem;
+  }
+
+  .menu {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .menu button {
+    flex: 1;
+    min-width: 120px;
+    margin-top: 0;
+    background: var(--branco);
+    color: var(--azul-escuro);
+    border: 1.5px solid var(--borda);
+    box-shadow: none;
+    font-weight: 600;
+    padding: 12px 10px;
+  }
+
+  .menu button:hover {
+    background: var(--azul-claro);
+    border-color: var(--azul);
+    box-shadow: none;
+  }
+
+  .menu button.ativo {
+    background: var(--azul);
+    color: var(--branco);
+    border-color: var(--azul);
+  }
+
+  small { color: var(--texto-suave); }
+
+  .badge {
+    display: inline-block;
+    background: var(--azul-claro);
+    color: var(--azul-escuro);
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    margin-left: 4px;
+  }
+
+  .vazio {
+    text-align: center;
+    color: var(--texto-suave);
+    padding: 20px 0;
+    font-style: italic;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🏫 Controle de Atrasos</h1>
+  <p>Registro de entrada dos alunos · Espírito Santo</p>
+</header>
+
+<main>
+  <div class="menu">
+    <button id="btnCadastro" class="ativo" onclick="mostrar('cadastro')">➕ Cadastrar aluno</button>
+    <button id="btnAtraso" onclick="mostrar('atraso')">⏰ Registrar atraso</button>
+    <button id="btnHistorico" onclick="mostrar('historico')">📋 Histórico</button>
+  </div>
+
+  <section id="cadastro" class="card">
+    <h2>Cadastro de aluno</h2>
+
+    <label>Nome do aluno</label>
+    <input id="nome" placeholder="Nome completo">
+
+    <label>Turma</label>
+    <input id="turma" placeholder="Ex.: 8º ano A">
+
+    <label>Nome do responsável</label>
+    <input id="responsavel" placeholder="Nome do responsável">
+
+    <label>WhatsApp do responsável</label>
+    <input id="telefone" type="tel" placeholder="Ex.: 5527999999999">
+
+    <button onclick="cadastrarAluno()">💾 Salvar aluno</button>
+
+    <h3>Alunos cadastrados <span class="badge" id="qtdAlunos">0</span></h3>
+    <div id="listaAlunos"></div>
+  </section>
+
+  <section id="atraso" class="card" style="display:none">
+    <h2>Registrar atraso</h2>
+
+    <label>Selecione o aluno</label>
+    <select id="alunoSelecionado"></select>
+
+    <label>Data</label>
+    <input type="date" id="data">
+
+    <label>Horário de chegada</label>
+    <input type="time" id="horario">
+
+    <label>Observação</label>
+    <textarea id="observacao" placeholder="Motivo ou observação (opcional)"></textarea>
+
+    <button class="whatsapp" onclick="registrarAtraso()">✅ Registrar atraso e avisar</button>
+  </section>
+
+  <section id="historico" class="card" style="display:none">
+    <h2>Histórico de atrasos</h2>
+
+    <button onclick="exportarCSV()">⬇️ Exportar histórico CSV</button>
+
+    <div id="listaAtrasos"></div>
+  </section>
+</main>
+
+<script>
+  let alunos = JSON.parse(localStorage.getItem("alunos_escola") || "[]");
+  let atrasos = JSON.parse(localStorage.getItem("atrasos_escola") || "[]");
+
+  function salvarDados() {
+    localStorage.setItem("alunos_escola", JSON.stringify(alunos));
+    localStorage.setItem("atrasos_escola", JSON.stringify(atrasos));
+  }
+
+  function mostrar(secao) {
+    ["cadastro", "atraso", "historico"].forEach(id => {
+      document.getElementById(id).style.display = id === secao ? "block" : "none";
+    });
+    const mapa = { cadastro: "btnCadastro", atraso: "btnAtraso", historico: "btnHistorico" };
+    Object.values(mapa).forEach(id => document.getElementById(id).classList.remove("ativo"));
+    document.getElementById(mapa[secao]).classList.add("ativo");
+    atualizarTela();
+  }
+
+  function cadastrarAluno() {
+    const nome = document.getElementById("nome").value.trim();
+    const turma = document.getElementById("turma").value.trim();
+    const responsavel = document.getElementById("responsavel").value.trim();
+    const telefone = document.getElementById("telefone").value.trim();
+
+    if (!nome || !turma || !responsavel || !telefone) {
+      alert("Preencha todos os campos.");
+      return;
+    }
+
+    alunos.push({ id: Date.now().toString(), nome, turma, responsavel, telefone });
+    salvarDados();
+
+    ["nome", "turma", "responsavel", "telefone"].forEach(id => document.getElementById(id).value = "");
+    atualizarTela();
+    alert("Aluno cadastrado com sucesso!");
+  }
+
+  function registrarAtraso() {
+    const id = document.getElementById("alunoSelecionado").value;
+    const aluno = alunos.find(a => a.id === id);
+    const data = document.getElementById("data").value;
+    const horario = document.getElementById("horario").value;
+    const observacao = document.getElementById("observacao").value.trim();
+
+    if (!aluno) { alert("Cadastre e selecione um aluno."); return; }
+    if (!data || !horario) { alert("Informe a data e o horário."); return; }
+
+    atrasos.push({
+      id: Date.now().toString(),
+      alunoId: aluno.id,
+      nome: aluno.nome,
+      turma: aluno.turma,
+      responsavel: aluno.responsavel,
+      telefone: aluno.telefone,
+      data, horario, observacao
+    });
+    salvarDados();
+    atualizarTela();
+
+    const mensagem = `Olá, ${aluno.responsavel}! ` +
+      `Informamos que o aluno ${aluno.nome}, da turma ${aluno.turma}, ` +
+      `chegou atrasado à escola. Data: ${data}. Horário: ${horario}.` +
+      (observacao ? ` Observação: ${observacao}` : "");
+
+    const telefone = aluno.telefone.replace(/\D/g, "");
+    document.getElementById("observacao").value = "";
+
+    if (telefone.length < 10) {
+      alert("Atraso registrado, mas confira o telefone do responsável.");
+      return;
+    }
+
+    const url = "https://wa.me/" + telefone + "?text=" + encodeURIComponent(mensagem);
+    if (confirm("Atraso registrado! Deseja abrir o WhatsApp para avisar o responsável?")) {
+      window.open(url, "_blank");
+    }
+  }
+
+  function excluirAluno(id) {
+    if (!confirm("Deseja excluir este aluno?")) return;
+    alunos = alunos.filter(a => a.id !== id);
+    salvarDados();
+    atualizarTela();
+  }
+
+  function excluirAtraso(id) {
+    if (!confirm("Deseja excluir este registro?")) return;
+    atrasos = atrasos.filter(a => a.id !== id);
+    salvarDados();
+    atualizarTela();
+  }
+
+  function atualizarTela() {
+    const listaAlunos = document.getElementById("listaAlunos");
+    listaAlunos.innerHTML = alunos.map(a => `
+      <div class="registro">
+        <strong>${escapar(a.nome)}</strong><br>
+        Turma: ${escapar(a.turma)}<br>
+        Responsável: ${escapar(a.responsavel)}<br>
+        WhatsApp: ${escapar(a.telefone)}
+        <button class="excluir" onclick="excluirAluno('${a.id}')">Excluir aluno</button>
+      </div>
+    `).join("") || '<p class="vazio">Nenhum aluno cadastrado.</p>';
+    document.getElementById("qtdAlunos").textContent = alunos.length;
+
+    const select = document.getElementById("alunoSelecionado");
+    const anterior = select.value;
+    select.innerHTML = alunos.map(a => `
+      <option value="${a.id}">${escapar(a.nome)} — ${escapar(a.turma)}</option>
+    `).join("");
+    if (alunos.some(a => a.id === anterior)) select.value = anterior;
+
+    const listaAtrasos = document.getElementById("listaAtrasos");
+    listaAtrasos.innerHTML = atrasos.slice().reverse().map(a => `
+      <div class="registro">
+        <strong>${escapar(a.nome)}</strong><br>
+        Turma: ${escapar(a.turma)}<br>
+        Data: ${escapar(a.data)} · Horário: ${escapar(a.horario)}<br>
+        Observação: ${escapar(a.observacao || "Nenhuma")}
+        <button class="whatsapp" onclick="avisarNovamente('${a.id}')">Avisar pelo WhatsApp</button>
+        <button class="excluir" onclick="excluirAtraso('${a.id}')">Excluir registro</button>
+      </div>
+    `).join("") || '<p class="vazio">Nenhum atraso registrado.</p>';
+  }
+
+  function avisarNovamente(id) {
+    const a = atrasos.find(x => x.id === id);
+    if (!a) return;
+    const mensagem = `Olá, ${a.responsavel}! Informamos que o aluno ${a.nome}, ` +
+      `da turma ${a.turma}, chegou atrasado à escola. Data: ${a.data}. ` +
+      `Horário: ${a.horario}.` + (a.observacao ? ` Observação: ${a.observacao}` : "");
+    const telefone = a.telefone.replace(/\D/g, "");
+    if (telefone.length < 10) { alert("Confira o telefone cadastrado."); return; }
+    window.open("https://wa.me/" + telefone + "?text=" + encodeURIComponent(mensagem), "_blank");
+  }
+
+  function exportarCSV() {
+    const linhas = [["Aluno", "Turma", "Responsável", "Telefone", "Data", "Horário", "Observação"]];
+    atrasos.forEach(a => linhas.push([a.nome, a.turma, a.responsavel, a.telefone, a.data, a.horario, a.observacao || ""]));
+    const csv = "\uFEFF" + linhas.map(l => l.map(v => '"' + String(v).replace(/"/g, '""') + '"').join(";")).join("\r\n");
+    const arquivo = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(arquivo);
+    link.download = "historico_atrasos.csv";
+    link.click();
+    URL.revokeObjectURL(link.href);
+  }
+
+  function escapar(valor) {
+    return String(valor ?? "").replace(/[&<>"']/g, c => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+    }[c]));
+  }
+
+  const agora = new Date();
+  document.getElementById("data").value = agora.getFullYear() + "-" +
+    String(agora.getMonth() + 1).padStart(2, "0") + "-" +
+    String(agora.getDate()).padStart(2, "0");
+  document.getElementById("horario").value =
+    String(agora.getHours()).padStart(2, "0") + ":" +
+    String(agora.getMinutes()).padStart(2, "0");
+
+  atualizarTela();
+</script>
+
+</body>
+</html>
